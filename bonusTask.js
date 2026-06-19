@@ -1,40 +1,58 @@
-let balance = 100000;
+let atm = {
+    bank: "IDFC Bank",
+    balance: 100000,
+    pin: "1234"
+};
+
+let options = ["Withdraw", "Check Balance"];
+
+let choice;
 let amount;
 
-alert("Welcome To IDFC Bank ATM");
+alert(`Welcome To ${atm.bank} ATM`);
 
-confirm("Pleae insert your card");
-let pin = prompt("Enter Your PIN");
+confirm("Please Insert Your Card");
 
-pin === "1234"
-? (
-    alert("Login Successful"),
+let userPin = prompt("Enter Your PIN");
 
-    amount = prompt("Enter Withdrawal Amount"),
+userPin === atm.pin ? (
+alert("Login Successful"),
 
-    amount <= balance
-    ? (
-        balance -= amount,
+choice = prompt(`Choose Option
+1. ${options[0]}
+2. ${options[1]}`),
 
-        console.log(`
-========================
+choice === "1" ? (
+amount = prompt("Enter Withdrawal Amount"),
+amount <= atm.balance ? ( atm.balance -= amount,
+
+ console.log(`========================
       ATM RECEIPT
 ========================
-       IDFC Bank
-
-Withdrawal : Rs.${amount}
-Balance    : Rs.${balance}
-Status     : Success
+Bank         : ${atm.bank}
+Transaction  : ${options[0]}
+Amount       : Rs.${amount}
+Balance      : Rs.${atm.balance}
+Status       : Success
 ========================
-        Thank You 
-========================`)
-    )
-    : console.log("Insufficient Balance")
+        Thank You
+========================`)): 
+ console.log("Insufficient Balance")) : 
+
+ choice === "2" ? 
+console.log(`========================
+      ATM RECEIPT
+========================
+Bank         : ${atm.bank}
+Transaction  : ${options[1]}
+Balance      : Rs.${atm.balance}
+Status       : Success
+========================
+       Thank You
+========================`): 
+console.log("Invalid Option")
 )
-: 
-alert("Invalid Pin");
-console.log("Invalid PIN");
-
-
-
-
+: (
+    alert("Invalid PIN"),
+    console.log("Invalid PIN")
+);
