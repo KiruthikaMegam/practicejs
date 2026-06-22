@@ -9,6 +9,7 @@ console.log("Company Name = " + companyName);
 alert("Welcome to Employee Portal");
 
 let isCompleted = confirm("Have you completed today's task?");
+
 console.log(isCompleted);
 
 let name = prompt("Please Enter Your Name");

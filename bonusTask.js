@@ -11,6 +11,7 @@ let amount;
 
 alert(`Welcome To ${atm.bank} ATM`);
 
+
 confirm("Please Insert Your Card");
 
 let userPin = prompt("Enter Your PIN");

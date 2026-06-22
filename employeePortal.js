@@ -6,6 +6,7 @@ let dept = "Development";
 let salary = 30000;
 let permanentEmp = true;
 
+
 console.log("1.Employee Registration");
 console.log(`    Employee Details
 ------------------------
