@@ -75,9 +75,9 @@ console.log("Fail");
 
 // Task 4: Bank ATM Eligibility
 
-let userName = prompt("Enter the Your Name");
-let accountBal = prompt("Enter the Account Balance");
-let withdrawBal = prompt("Enter the Withdrawal Balance");
+let userName = prompt("Enter Your Name");
+let accountBal = prompt("Enter Account Balance");
+let withdrawBal = prompt("Enter Withdrawal Balance");
 
 console.log("Bank ATM Eligibility");
 
