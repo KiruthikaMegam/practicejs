@@ -1,0 +1,71 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filterProduct input{
+    width: 300px;
+    height: 40px;
+    padding: 0 10px;
+}
+
+.filterProduct button{
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.list{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.list select{
+    width: 180px;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.card{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card > div{
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.15);
+    text-align: center;
+}
+
+.card img{
+    width: 180px;
+    height: 200px;
+    object-fit: contain;
+}
+
+.card h2,
+.card h3{
+    margin: 10px 0;
+}
+
+.card p{
+    margin: 8px 0;
+    color: #555;
+    line-height: 1.5;
+}

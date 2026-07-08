@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+ 
+<input type="text" id="search" placeholder="Search Product">
+<button>Search</button>
+<div id="searchProduct"></div>
+<div id="output"></div>
+<div id="ratingList"></div>
+<div id="electronics"></div>
+<div id="mens"></div>
+<div id="women"></div>
+<div id="jewelery"></div>
+<div id="firstFive"></div>
+<div id="lastFive"></div>
+<div id="productList"></div>
+<div id="highestRated"></div>
+<div id="cheapest"></div>
+<div id="costliest"></div>
+<div id="error"></div>
+
+    <script>
+
+        let product = "https://fakestoreapi.com/products"
+        let responseData = [];
+        fetch(product).then((data)=>{
+            return data.json();
+        })        
+        .then((jsdata)=>{
+            responseData = jsdata;
+            console.log(responseData);
+            
+        // Task 1 - Show Product Count 
+
+        let output = document.getElementById("output");
+        let totalCount = responseData.length;
+        output.innerHTML += `
+        <h2>Total Products : ${totalCount}</h2>
+        `;
+
+        // Task 2 - Display Only Product Names
+        
+        output.innerHTML += "<h2>Product Names</h2>";
+        responseData.forEach((data,index)=>{
+            output.innerHTML += `
+            <p>${index+1}. ${data.title}</p>
+            `;
+        });
+
+        // Task 3 - Display Products Below ₹100
+
+        output.innerHTML += "<h2>Products Below ₹100</h2>";
+        let below100 = responseData.filter((data)=>data.price < 100);
+        below100.forEach((data,index)=>{
+            output.innerHTML += `
+            <p>${index+1}. ${data.title} - ${data.price}</p>
+          `;
+        });
+
+        // Task 4 - Display Products Above ₹100
+
+         output.innerHTML += "<h2>Products Above ₹100</h2>";
+         let above100 = responseData.filter((data)=>data.price > 100);
+         above100.forEach((data,index)=>{
+             output.innerHTML += `
+             <p>${index+1}. ${data.title} - ${data.price}</p>
+             `;
+         });
+
+        // Task 5 - Show Category
+
+       let categories = {};
+       responseData.forEach((data)=>{
+           if(!categories[data.category]){
+               categories[data.category] = [];
+           }
+           categories[data.category].push(data);
+       });
+       for(let cat in categories){
+           output.innerHTML += `<h2>${cat}</h2>`;
+       }
+
+       //  Task 6 - Display Rating
+
+       let ratingList = document.getElementById("ratingList");
+       ratingList.innerHTML = "<h2>Display Product With Rating</h2>";
+       responseData.forEach((data,index) => {
+           ratingList.innerHTML += `
+               <div >
+                   <h3>${index + 1}. ${data.title}</h3>
+                   <p>Rating : ⭐ ${data.rating.rate}</p>
+               </div>
+           `;
+       });
+
+        // Task 7 - Product Search
+        
+        let button = document.querySelector("button");
+        let searchProduct = document.querySelector("#searchProduct")
+        button.addEventListener("click", () => {
+        let value = document.querySelector("#search").value.toLowerCase();
+        let found = false;
+        searchProduct.innerHTML = `<h2>Filter By Product</h2>`
+        responseData.forEach((data) => {
+            if (data.title.toLowerCase().includes(value)) {
+                found = true;
+                searchProduct.innerHTML += `
+                <div>
+                    <h3>${data.title}</h3>
+                    <p>${data.price}</p>
+                </div>
+                `;
+            }
+        });
+        if (!found) {
+            output.innerHTML = "<h3>----No Products Found-----</h3>";
+        }
+        });
+        
+       //  Task 8 - Electronics Products  
+
+       let count = 1;
+       let electronics = document.querySelector("#electronics");
+       electronics.innerHTML = `<h1>Electronics</h1>`
+       responseData.forEach((data) => {
+           if (data.category.toLowerCase() === "electronics") {
+               electronics.innerHTML += `
+               <div >
+                   <h3>${count}. ${data.title}</h3>
+                   <p>Price : ${data.price}</p>
+                   <p>Rating : ⭐ ${data.rating.rate}</p>
+               </div>
+               `;
+               count++;
+           }
+       });
+
+       //  Task 9 - Men's Clothing  
+
+      let count1 = 1;
+      let mens = document.querySelector("#mens");
+      mens.innerHTML = `<h1>Men's Clothing</h1>`
+      responseData.forEach((data) => {
+          if (data.category.toLowerCase() === "men's clothing") {
+              mens.innerHTML += `
+              <div >
+                  <h3>${count1}. ${data.title}</h3>
+                  <p>Price : ${data.price}</p>
+                  <p>Rating : ⭐ ${data.rating.rate}</p>
+              </div>
+              `;
+              count1++;
+          }
+      });
+
+       //  Task 10 - Women's Clothing  
+
+      let count2 = 1;
+      let women = document.querySelector("#women");
+      women.innerHTML = `<h1>Women's Clothing</h1>`;
+      responseData.forEach((data) => {
+          if (data.category.toLowerCase() === "women's clothing") {
+              women.innerHTML += `
+              <div >
+                  <h3>${count2}. ${data.title}</h3>
+                  <p>Price : ${data.price}</p>
+                  <p>Rating : ⭐ ${data.rating.rate}</p>
+              </div>
+              `;
+              count2++;
+          }
+      });
+
+       //  Task 11 - Jewellery Products 
+
+       let count3 = 1;
+       let jewelery = document.querySelector("#jewelery");
+       jewelery.innerHTML = `<h1>Jewellery</h1>`
+       responseData.forEach((data) => {
+           if (data.category.toLowerCase() === "jewelery") {
+               jewelery.innerHTML += `
+               <div >
+                   <h3>${count3}. ${data.title}</h3>
+                   <p>Price : ${data.price}</p>
+                   <p>Rating : ⭐ ${data.rating.rate}</p>
+               </div>
+               `;
+               count3++;
+           }
+       });
+
+       //    Task 12 - Show First 5 Products
+
+      let firstFive = responseData.slice(0, 5);
+      let first = document.querySelector("#firstFive");
+      first.innerHTML = "<h1>First 5 Products</h1>";
+      firstFive.forEach((data, index) => {
+          first.innerHTML += `
+          <div >
+              <h3>${index + 1}. ${data.title}</h3>
+              <p>Price : ${data.price}</p>
+              <p>Category : ${data.category}</p>
+              <p>Rating : ⭐ ${data.rating.rate}</p>
+          </div>
+          `;
+      });
+      
+      //   Task 13 - Show Last 5 Products
+
+      let lastFive = responseData.slice(-5);
+      let last = document.querySelector("#lastFive");
+      last.innerHTML = "<h1>Last 5 Products</h1>";
+      lastFive.forEach((data, index) => {
+          last.innerHTML += `
+          <div >
+              <h3>${index + 1}. ${data.title}</h3>
+              <p>Price : ${data.price}</p>
+              <p>Category : ${data.category}</p>
+              <p>Rating : ⭐ ${data.rating.rate}</p>
+          </div>
+          `;
+      });
+
+      // Task 14 - Add Serial Number
+
+      let list = document.querySelector("#productList");
+      list.innerHTML = "<h2>Products</h2>";
+      responseData.forEach((data, index) => {
+          list.innerHTML += `
+              <div >
+              <h3>${index + 1}. ${data.title}</h3>
+              <img src="${data.image}" width="150">
+              <p>Price : ${data.price}</p>
+              <p>Category : ${data.category}</p>
+              <p>Rating : ⭐ ${data.rating.rate}</p>
+              </div>
+          `;
+      });
+
+      // Task 15 - Long Description
+
+      responseData.forEach((data,index) => {
+      if (data.description.length > 100) {
+      console.log(`Product ${index + 1}  : ${data.title}
+      Description : ${data.description.slice(0, 100)} Read More...`);
+      } else {
+      console.log(`Product ${index + 1}  : ${data.title}
+      Description : ${data.description}`);    
+      }
+      });
+
+      //  Task 16 - Highest Rated Product
+    
+      let highestRated = responseData[0];
+      responseData.forEach((data) => {
+          if (data.rating.rate > highestRated.rating.rate) {
+              highestRated = data;
+          }
+      });
+  
+      let highest = document.querySelector("#highestRated");
+      highest.innerHTML = `
+      <h2>Highest Rated Product</h2>
+      <div >
+          <h3>${highestRated.title}</h3>
+          <p>Price : ${highestRated.price}</p>
+          <p>Rating : ⭐ ${highestRated.rating.rate}</p>
+      </div>
+      `;
+
+      // Task 17 - Cheapest Product
+
+      let cheapest = responseData[0];
+      responseData.forEach((data) => {
+          if (data.price < cheapest.price) {
+              cheapest = data;
+          }
+      });
+      let cheapestDiv = document.querySelector("#cheapest");
+      cheapestDiv.innerHTML = `
+      <h2>Cheapest Product</h2>
+      <div >
+          <h3>${cheapest.title}</h3>
+          <p>Price : ${cheapest.price}</p>
+          <p>Category : ${cheapest.category}</p>
+          <p>Rating : ⭐ ${cheapest.rating.rate}</p>
+      </div>
+      `;
+
+      // Task 18 - Costliest Product
+
+      let costliest = responseData[0];
+      responseData.forEach((data) => {
+          if (data.price < costliest.price) {
+              costliest = data;
+          }
+      });
+      let costliestDiv = document.querySelector("#costliest");
+      costliestDiv.innerHTML = `
+      <h2>Costliest Product</h2>
+      <div >
+          <h3>${costliest.title}</h3>
+          <p>Price : ${costliest.price}</p>
+          <p>Category : ${costliest.category}</p>
+          <p>Rating : ⭐ ${costliest.rating.rate}</p>
+      </div>`
+      })
+      .catch((err) => {
+        let error = document.querySelector("#error");
+        error.innerHTML = `
+            <h2>❌ Unable to Load Products</h2>
+        `;
+      });    
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Project</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+    <div class="nav">
+    <div class="filterProduct">
+    <input type="text" id="search" placeholder="Search Product">
+    <button onclick="searchProduct()" id="button">Search</button>
+    </div>
+    <div class="list"></div>
+    </div>
+    <div class="card"></div>
+    <div>
+    </div>
+    
+    <script>
+        let product = "https://fakestoreapi.com/products";
+        let responseData = [];
+        fetch(product).then((data)=> {
+            return data.json();
+        })
+        .then((data)=>{
+            responseData = data;
+            
+            let div = document.querySelector(".card");
+            responseData.forEach((data)=>{
+            div.innerHTML += `
+            <div>
+                <h1>${data.title}</h1>
+                <img src="${data.image}">
+                <p>Description: ${data.description.slice(0,100)}... <span>Read More</span></p>
+                <h3>Price: ${data.price}</h3>
+                <h3>Rating: ⭐ ${data.rating.rate}</h3>
+            </div>
+            `;
+            })
+            
+            let button = document.querySelector("#button");
+            let input = document.querySelector("#search");
+            button.addEventListener("click", ()=>{
+                let value = input.value.toLowerCase();
+            
+                let result = responseData.filter((data) => {
+                    return data.title.toLowerCase().includes(value) 
+                });
+                div.innerHTML = "";
+                result.forEach((data) => {
+                div.innerHTML += `
+                <div>
+                <h1>${data.title}</h1>
+                <img src="${data.image}">
+                <p>Description: ${data.description.slice(0,100)}... <span>Read More</span></p>
+                <h3>Price: ${data.price}</h3>
+                <h3>Rating: ⭐ ${data.rating.rate}</h3>
+                </div>
+            `;
+                });
+            });
+
+           let list = document.querySelector(".list");
+           list.innerHTML = `
+           <div>
+               <!-- Category -->
+               <select id="category">
+                   <option value="">All Categories</option>
+               </select>
+           
+               <!-- Price -->
+               <select id="price">
+                   <option value="">All Prices</option>
+                   <option value="100">Below ₹100</option>
+                   <option value="500">Below ₹500</option>
+                   <option value="1000">Below ₹1000</option>
+               </select>
+           
+               <!-- Rating -->
+               <select id="rating">
+                   <option value="">All Ratings</option>
+                   <option value="above4">Above 4</option>
+                   <option value="below4">Below 4</option>
+                   <option value="below3">Below 3</option>
+                   <option value="above3">Above 3</option>
+               </select>
+           </div>
+           `;
+           
+           let category = document.querySelector("#category");
+           let price = document.querySelector("#price");
+           let rating = document.querySelector("#rating");
+           
+           let categories = [];
+           responseData.forEach((data) => {
+               if (!categories.includes(data.category)) {
+                   categories.push(data.category);
+               }
+           });
+           categories.forEach((cat) => {
+               category.innerHTML += `
+                   <option value="${cat}">${cat}</option>
+               `;
+           });
+           category.addEventListener("change", () => {
+               div.innerHTML = "";
+               let selectedCategory = category.value;
+               responseData.forEach((data) => {
+                   if (selectedCategory === "" || data.category === selectedCategory) {
+                       div.innerHTML += `
+                           <div class="card">
+                               <h2>${data.title}</h2>
+                               <img src="${data.image}" width="150">
+                               <p>${data.description.slice(0,100)}...</p>
+                               <p>Price : ${data.price}</p>
+                               <p>Rating : ⭐ ${data.rating.rate}</p>
+                           </div>
+                       `;
+                   }
+           
+               });
+           
+           });
+           
+           price.addEventListener("change", () => {
+               div.innerHTML = "";
+               let selectedPrice = price.value;
+               responseData.forEach((data) => {
+                   if (
+                       selectedPrice === "" ||
+                       (selectedPrice === "100" && data.price < 100) ||
+                       (selectedPrice === "500" && data.price < 500) ||
+                       (selectedPrice === "1000" && data.price < 1000)
+                   ) {
+                       div.innerHTML += `
+                           <div class="card">
+                               <h2>${data.title}</h2>
+                               <img src="${data.image}" width="150">
+                               <p>${data.description.slice(0,100)}...</p>
+                               <p>Price : ${data.price}</p>
+                               <p>Rating : ⭐ ${data.rating.rate}</p>
+                           </div>
+                       `;
+                   }
+               });
+           });
+           
+           rating.addEventListener("change", () => {
+                div.innerHTML = "";
+                let selectedRating = rating.value;
+                responseData.forEach((data) => {
+                    if (
+                        selectedRating === "" ||
+                        (selectedRating === "above4" && data.rating.rate > 4) ||
+                        (selectedRating === "below3" && data.rating.rate < 3) ||
+                        (selectedRating === "above3" && data.rating.rate > 3) ||
+                        (selectedRating === "below4" && data.rating.rate < 4)
+                    ) {
+                        div.innerHTML += `
+                            <div class="card">
+                                <h2>${data.title}</h2>
+                                <img src="${data.image}" width="150">
+                                <p>${data.description.slice(0,100)}...</p>
+                                <p>Price : ${data.price}</p>
+                                <p>Rating : ⭐ ${data.rating.rate}</p>
+                            </div>
+                        `;
+                    }
+                });
+            });            
+})
+.catch((error) => {
+        console.log(error);
+});
+    </script>
+</body>
+</html>
